@@ -4,7 +4,7 @@ import pandas as pd
 import random, os
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, origins='*')
 
 # temporary directory
 UPLOAD_DIR = './uploads'
@@ -12,10 +12,10 @@ os.makedirs(UPLOAD_DIR, exist_ok = True)
 
 ALLOWED_EXTENSIONS = ['xlsx', 'xls']
 
-@app.route("/upload", methods=['POST'])
-
 def isFileAllowed(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route("/upload", methods=['POST'])
 
 def uploadFile():
     if 'file' not in request.files:

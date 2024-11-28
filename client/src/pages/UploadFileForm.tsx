@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import FormFileInput from "./FormFileInput.tsx";
 
 import { useResult, ResultProvider } from "../helper/context.tsx";
 
@@ -52,7 +53,7 @@ const UploadFileForm = () => {
         <input type="file" accept=".xlsx,.xls" onChange={handleFileChange} />
         <button type="submit">Upload</button>
       </form>
-
+      {isUploaded && <FormFileInput />}
       <div>
         <h3>Results</h3>
         <p>{result || "No result yet."}</p>

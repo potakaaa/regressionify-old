@@ -19,7 +19,7 @@ const FormFileInput = () => {
       const response = await axios.post(
         "http://localhost:5000/submit",
         {
-          xInputValues,
+          values: xInputValues,
         },
         {
           headers: {
@@ -28,7 +28,7 @@ const FormFileInput = () => {
         }
       );
       console.log("Input submitted successfully", response.data.message);
-      setResult(response.data.message);
+      setResult(response.data.processedValues);
     } catch (err) {
       console.error("Error submitting data:", err);
       setResult("An error occurred while submitting input.");

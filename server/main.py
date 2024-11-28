@@ -48,7 +48,8 @@ def submitInput():
 
         # Process the input values (you can customize this logic)
         processed_values = [value.upper() for value in values]  # Example: Convert to uppercase
-
+        
+        print(processed_values)
         return jsonify({"message": "Data received successfully", "processedValues": processed_values}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

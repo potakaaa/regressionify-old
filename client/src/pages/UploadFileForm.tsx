@@ -5,6 +5,15 @@ const UploadFileForm = () => {
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<string | null>(null);
 
+  const [xInputNum, setXInputNum] = useState(1);
+  const [xInputValues, setXInputValues] = useState<string[]>([]);
+
+  const handleInputChange = (index: number, value: string) => {
+    const newValues = [...xInputValues];
+    newValues[index] = value;
+    setXInputValues(newValues);
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]); // Get the selected file
@@ -43,12 +52,41 @@ const UploadFileForm = () => {
 
   return (
     <div>
-      <p>{}</p>
       <form onSubmit={handleSubmit}>
         <input type="file" accept=".xlsx,.xls" onChange={handleFileChange} />
         <button type="submit">Upload</button>
       </form>
 
+      <div>
+        <label>Number of Dependents</label>
+        <input
+          type="number"
+          min={1}
+          max={7}
+          value={xInputNum}
+          onChange={(e) => {
+            const count = parseInt(e.target.value, 10);
+            setXInputNum(count);
+            setXInputValues(new Array(count).fill(""));
+          }}
+        />
+      </div>
+      <div>
+        {Array.from({ length: xInputNum }).map((_, index) => (
+          <div key={index} style={{ marginBottom: "10px" }}>
+            <label>
+              Dependent variable {index + 1}:{" "}
+              <input
+                key={index}
+                type="text"
+                value={xInputValues[index] || ""}
+                onChange={(e) => handleInputChange(index, e.target.value)}
+              />
+            </label>
+          </div>
+        ))}
+        <button>Submit</button>
+      </div>
       <div>
         <h3>Results</h3>
         <p>{result || "No result yet."}</p>

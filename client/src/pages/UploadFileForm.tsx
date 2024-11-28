@@ -20,7 +20,28 @@ const UploadFileForm = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleInputSubmit = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/submit",
+        {
+          xInputValues,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json", // Make sure to set this
+          },
+        }
+      );
+      console.log("Input submitted successfully", response.data.message);
+      setResult(response.data.message);
+    } catch (err) {
+      console.error("Error submitting data:", err);
+      setResult("An error occurred while submitting input.");
+    }
+  };
+
+  const handleFileSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!file) {
@@ -52,7 +73,7 @@ const UploadFileForm = () => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleFileSubmit}>
         <input type="file" accept=".xlsx,.xls" onChange={handleFileChange} />
         <button type="submit">Upload</button>
       </form>
@@ -85,7 +106,8 @@ const UploadFileForm = () => {
             </label>
           </div>
         ))}
-        <button>Submit</button>
+        <button onClick={handleInputSubmit}>Submit</button>
+        <p>{}</p>
       </div>
       <div>
         <h3>Results</h3>

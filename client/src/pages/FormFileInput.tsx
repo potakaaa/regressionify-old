@@ -8,6 +8,7 @@ const FormFileInput = () => {
   const [xInputValues, setXInputValues] = useState<string[]>([]);
 
   const { result, setResult } = useResult();
+  const { isLoading, setIsLoading } = useResult();
 
   const handleInputChange = (index: number, value: string) => {
     const newValues = [...xInputValues];
@@ -16,6 +17,7 @@ const FormFileInput = () => {
   };
   const handleInputSubmit = async () => {
     try {
+      setIsLoading(true);
       const response = await axios.post(
         "http://localhost:5000/submit",
         {
@@ -29,9 +31,11 @@ const FormFileInput = () => {
       );
       console.log("Input submitted successfully", response.data.message);
       setResult(response.data.processedValues);
+      setIsLoading(false);
     } catch (err) {
       console.error("Error submitting data:", err);
       setResult("An error occurred while submitting input.");
+      setIsLoading(false);
     }
   };
 

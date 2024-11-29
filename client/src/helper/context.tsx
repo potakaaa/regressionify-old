@@ -3,6 +3,8 @@ import { createContext, useState, useContext } from "react";
 interface ResultContextType {
   result: string;
   setResult: React.Dispatch<React.SetStateAction<string>>;
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ResultContext = createContext<ResultContextType | undefined>(
@@ -13,9 +15,12 @@ export const ResultProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [result, setResult] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
-    <ResultContext.Provider value={{ result, setResult }}>
+    <ResultContext.Provider
+      value={{ result, setResult, isLoading, setIsLoading }}
+    >
       {children}
     </ResultContext.Provider>
   );

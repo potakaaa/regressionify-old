@@ -1,4 +1,5 @@
 import pandas as pd
+import statsmodels.api as sm
 from openpyxl import load_workbook
 
 y = ["TOTEX"]
@@ -23,10 +24,29 @@ def writeTrainedData(path, sheet, new_sheet, start, n80):
 
     print(f"Subset of data written to a new sheet: '{new_sheet}' in {file}")
 
+def getCoefficients(path, sheet, y, x):
+    file = path
+    data = pd.read_excel(file, sheet_name=sheet)
+
+    independent = data[x]
+    dependent = data[y]
+
+    independent = sm.add_constant(independent)
+    model = sm.OLS(dependent, independent)
+    results = model.fit()
+
+    return results.params.tolist()
+
+file_path = "Model.xlsx"
+
+y_var = "TOTEX"
+x_var = ["TOINC", "URB","FSIZE", "emp_status"]
+
+print(getCoefficients(file_path, "Trimmed_Data", y_var, x_var))
 
 
 # Load the Excel file
-file_path = "Model.xlsx"
+'''file_path = "Model.xlsx"
 new_sheet_name = "test_subset"
 y_var = pd.read_excel(file_path, sheet_name="Trimmed_Data", usecols=y)
 x_var = pd.read_excel(file_path, sheet_name="Trimmed_Data", usecols=x)
@@ -41,4 +61,4 @@ test_subset_data = data.iloc[n_80 + 1:n_end]
 with pd.ExcelWriter(file_path, engine="openpyxl", mode="a") as writer:
     shuffleData(train_subset_data).to_excel(writer, sheet_name=new_sheet_name, index=False)
 
-print(f"Subset of data written to a new sheet: '{new_sheet_name}' in {file_path}")
+print(f"Subset of data written to a new sheet: '{new_sheet_name}' in {file_path}")'''

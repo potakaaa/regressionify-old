@@ -33,7 +33,7 @@ def writeTrainAndTestData(path, sheet, train_sheet, test_sheet):
     print("Last row: ", n_end)
 
     train_subset_data = data.iloc[0:n80]
-    test_subset_data = data.iloc[n80:n_end]
+    test_subset_data = data.iloc[n80:n_end+1]
 
     with pd.ExcelWriter(file, engine="openpyxl", mode="a", if_sheet_exists='replace') as writer:
         shuffleData(train_subset_data).to_excel(writer, sheet_name=train_sheet, index=False)
@@ -45,12 +45,13 @@ def getCoefficients(path, sheet, y, x):
     file = path
     data = pd.read_excel(file, sheet_name=sheet)
 
+    data_cleaned = data[~data.isna().any(axis=1)]  # Remove rows with any NaN
+    data_cleaned = data_cleaned[~np.isinf(data_cleaned).any(axis=1)] 
+
     independent = data[x]
     dependent = data[y]
 
     independent = sm.add_constant(independent)
-    independent.isna().sum()
-    np.isinf(independent).sum()
     model = sm.OLS(dependent, independent)
     results = model.fit()
 
@@ -108,32 +109,42 @@ def writePredictions(path, sheet, coefficients):
 
     print("File Saved")
 
-# ERROR IF I ADD NI DUHA KA FUNCTIONS WTF IDK WHY
-'''def getMSE(actual, predicted):
+
+# MU ERROR SILA ANI IDK WTF WHY
+def getMSE(actual, predicted):
     return mse(actual, predicted)
 
-def writeRMSE(path, sheet):
-    df = pd.read_excel(path, sheet_name=sheet)
 
+'''def writeRMSE(path, sheet):
+    # Read the existing sheet
+    df = pd.read_excel(path, sheet_name=sheet)
+    
+    # Extract actual and predicted values
     actual = df["Actual"].tolist()
     predicted = df["Predicted"].tolist()
     
+    # Calculate metrics
     mse = getMSE(actual, predicted)
     rmse = sqrt(mse)
-    normalized = (rmse/mean(actual)) * 100
+    normalized = (rmse / mean(actual)) * 100
 
-    metrics_df = pd.DataFrame({
-        'Metric': ['MSE', 'RMSE', 'Normalized RMSE'],
-        'Value': [mse, rmse, normalized]
-    })
+    # Prepare metrics data
+    metrics = ['MSE', 'RMSE', 'Normalized RMSE']
+    values = [mse, rmse, normalized]
 
+    # Determine the last valid column in the existing sheet
+    last_column = df.columns.size  # Number of columns in the existing DataFrame
+
+    # Write metrics to the Excel file
     with pd.ExcelWriter(path, engine='openpyxl', mode='a', if_sheet_exists='overlay') as writer:
-        # Write metrics to the specified sheet
-        metrics_df.to_excel(writer, sheet_name=sheet, index=False, startrow=0)'''
+        # Write metrics in columns
+        for col_offset, (metric, value) in enumerate(zip(metrics, values)):
+            writer.sheets[sheet].cell(row=1, column=last_column + col_offset + 1).value = metric
 
+'''
 ""
 path = "Model.xlsx"
-reference_sheet = "Sheet1"
+reference_sheet = "Trimmed_Data"
 
 newTrain = "Train_Data"
 newTest = "Test_Data"
@@ -145,7 +156,7 @@ print(coeff)
 
 writePredictions(path, newTest, coeff)
 
-writeRMSE(path, newTest)
+#writeRMSE(path, newTest)
     
 
 

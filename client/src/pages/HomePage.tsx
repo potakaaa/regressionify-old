@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 import { useResult, ResultProvider } from "../helper/context.tsx";
@@ -15,7 +15,11 @@ const HomePage = () => {
 
   const nav = useNavigate();
 
-  setIsLoading(true);
+  useEffect(() => {
+    if (isUploaded) {
+      nav("/results"); // Navigate to the results page
+    }
+  }, [isUploaded, nav]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -52,7 +56,6 @@ const HomePage = () => {
       setIsLoading(false);
       setIsUploaded(true);
       console.log("File uploaded successfully", response.data);
-      nav("/results");
     } catch (error) {
       console.error("Error uploading file", error);
       setResult("An error occurred while processing the file.");
@@ -74,15 +77,18 @@ const HomePage = () => {
                 placeholder="Reference Sheet Name"
                 required
                 className="font-medium p-2 px-4 rounded-full bg-transparent border border-beige shadow-lg"
-                value={sheetName}
-                onChange={(e) => setSheetName(e.target.value)}
+                value={sheetName || ""}
+                onChange={(e) => {
+                  setSheetName(e.target.value);
+                  console.log("this is sheetname", sheetName);
+                }}
               />
               <input
                 type="text"
                 placeholder="Dependent Variable"
                 required
                 className="font-medium p-2 px-4 rounded-full bg-transparent border border-beige shadow-lg"
-                value={dep}
+                value={dep || ""}
                 onChange={(e) => setDep(e.target.value)}
               />
               <input
@@ -90,7 +96,7 @@ const HomePage = () => {
                 placeholder="Independent Variable"
                 required
                 className="font-medium p-2 px-4 rounded-full bg-transparent border border-beige shadow-lg"
-                value={indep}
+                value={indep || ""}
                 onChange={(e) => setIndep(e.target.value)}
               />
             </div>
@@ -109,7 +115,7 @@ const HomePage = () => {
             </div>
             <button
               type="submit"
-              className="self-end bg-dark-grey px-4 py-2 rounded-full hover:bg-light-green duration-300 shadow-lg"
+              className=" bg-dark-grey px-4 py-2 rounded-full hover:bg-light-green duration-300 shadow-lg"
             >
               Start Regression
             </button>

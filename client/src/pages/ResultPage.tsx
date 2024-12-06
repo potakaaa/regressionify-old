@@ -1,7 +1,7 @@
 import { useResult, ResultProvider } from "../helper/context";
 
 const ResultPage = () => {
-  const { sheetName, setSheetName } = useResult();
+  const { sheetName } = useResult();
 
   return (
     <ResultProvider>
@@ -10,7 +10,7 @@ const ResultPage = () => {
           <h1 className="text-3xl text-beige">Regressionify</h1>
         </div>
         <div>
-          <h3 className="text-xl font-bold">Results</h3>
+          <h3 className="text-xl font-bold"></h3>
         </div>
       </div>
     </ResultProvider>

@@ -6,6 +6,8 @@ import { createHashRouter, RouterProvider } from "react-router-dom";
 import ResultPage from "./pages/ResultPage.tsx";
 import Page404 from "./pages/Page404.tsx";
 
+import { ResultProvider } from "./helper/context.tsx";
+
 const router = createHashRouter([
   {
     path: "/",
@@ -24,7 +26,9 @@ const router = createHashRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>
+  <ResultProvider>
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>
+  </ResultProvider>
 );

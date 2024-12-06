@@ -1,8 +1,15 @@
 import { createContext, useState, useContext } from "react";
 
+interface Result {
+  message?: string; // Optional success message
+  dataPreview?: object; // Optional data preview from the uploaded file
+  regression?: object; // Optional regression results
+  error?: string; // Optional error message
+}
+
 interface ResultContextType {
-  result: string;
-  setResult: React.Dispatch<React.SetStateAction<string>>;
+  result: Result | null;
+  setResult: React.Dispatch<React.SetStateAction<Result | null>>;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   isUploaded: boolean;
@@ -13,6 +20,14 @@ interface ResultContextType {
   setDep: React.Dispatch<React.SetStateAction<string>>;
   indep: string;
   setIndep: React.Dispatch<React.SetStateAction<string>>;
+  coeff: Record<string, number>;
+  setCoeff: React.Dispatch<React.SetStateAction<Record<string, number>>>;
+  pValues: Record<string, number>;
+  setPValues: React.Dispatch<React.SetStateAction<Record<string, number>>>;
+  rSquared: number;
+  setRSquared: React.Dispatch<React.SetStateAction<number>>;
+  adjRSquared: number;
+  setAdjRSquared: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const ResultContext = createContext<ResultContextType | undefined>(
@@ -22,12 +37,16 @@ export const ResultContext = createContext<ResultContextType | undefined>(
 export const ResultProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [result, setResult] = useState<string>("");
+  const [result, setResult] = useState<Result | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isUploaded, setIsUploaded] = useState<boolean>(false);
   const [sheetName, setSheetName] = useState<string>("");
   const [dep, setDep] = useState<string>("");
   const [indep, setIndep] = useState<string>("");
+  const [coeff, setCoeff] = useState<Record<string, number>>({});
+  const [pValues, setPValues] = useState<Record<string, number>>({});
+  const [rSquared, setRSquared] = useState<number>(0);
+  const [adjRSquared, setAdjRSquared] = useState<number>(0);
 
   return (
     <ResultContext.Provider
@@ -44,6 +63,14 @@ export const ResultProvider: React.FC<{ children: React.ReactNode }> = ({
         setDep,
         indep,
         setIndep,
+        coeff,
+        setCoeff,
+        pValues,
+        setPValues,
+        rSquared,
+        setRSquared,
+        adjRSquared,
+        setAdjRSquared,
       }}
     >
       {children}

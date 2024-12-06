@@ -7,11 +7,6 @@ from math import sqrt
 from statistics import mean
 import numpy as np
 
-y = ["TOTEX"]
-x = ["TOINC", "URB","FSIZE", "emp_status"]
-
-path = "Model.xlsx"
-reference_sheet = "Trimmed_Data"
 
 def number_to_column_letter(n):
     column_letter = ''
@@ -21,25 +16,31 @@ def number_to_column_letter(n):
     return column_letter
 
 def shuffleData(subset_data):
-    return subset_data.sort_values(by="shuffler", ascending=True)
+    return subset_data.sample(frac=1).reset_index(drop=True)
 
-def writeTrainAndTestData(path, sheet, train_sheet, test_sheet):
-    file = path 
-    data = pd.read_excel(file, sheet_name=sheet)
+def writeTrainData(path, sheet, train_sheet):
+    data = pd.read_excel(path, sheet_name=sheet)
 
+    n80 = int(len(data) * 0.8)
+    
+    train_subset_data = data.iloc[0:n80]
+
+    with pd.ExcelWriter(path, engine="openpyxl", mode="a", if_sheet_exists='replace') as writer:
+        shuffleData(train_subset_data).to_excel(writer, sheet_name=train_sheet, index=False)
+
+def writeTestData(path, sheet, test_sheet):
+    data = pd.read_excel(path, sheet_name=sheet)
+    
     n80 = int(len(data) * 0.8)
     last_valid_row_position = data.last_valid_index()
     n_end = data.index.get_loc(last_valid_row_position)
     print("Last row: ", n_end)
-
-    train_subset_data = data.iloc[0:n80]
+    
     test_subset_data = data.iloc[n80:n_end+1]
 
-    with pd.ExcelWriter(file, engine="openpyxl", mode="a", if_sheet_exists='replace') as writer:
-        shuffleData(train_subset_data).to_excel(writer, sheet_name=train_sheet, index=False)
-        test_subset_data.to_excel(writer, sheet_name=test_sheet, index=False)
+    with pd.ExcelWriter(path, engine="openpyxl", mode="a", if_sheet_exists='replace') as writer:
+        shuffleData(test_subset_data).to_excel(writer, sheet_name=test_sheet, index=False)
 
-    print(f"Subset of data written to a new sheet: '{train_sheet}' and '{test_sheet}' in {file}")
 
 def getCoefficients(path, sheet, y, x):
     file = path
@@ -61,7 +62,6 @@ def getCoefficients(path, sheet, y, x):
 def writePredictions(path, sheet, coefficients):
     # Load the Excel file into a pandas DataFrame
     df = pd.read_excel(path, sheet_name=sheet)
-    print(df)
     # Add headers for the new columns
     headings = ['Actual', 'Predicted', 'Error', 'Error^2']
 
@@ -86,23 +86,20 @@ def writePredictions(path, sheet, coefficients):
 
 
     # Predicted values
-    
     for i in range(row_max):
         predicted = coefficients[0]
         for j in range(1, len(coefficients)):
             predicted += coefficients[j] * df.iloc[i, j] 
         df.iloc[i, start_col+1] = predicted
 
-    print(df.iloc[0, start_col])
     #error and error square
     for i in range(row_max):
-
         error = df.iloc[i,start_col+1] - df.iloc[i,start_col]
         
         df.iloc[i, start_col+2] = error
         df.iloc[i, start_col+3] = error*error
 
-    df.insert(start_col, "", None)
+    
 
     with pd.ExcelWriter(path, engine="openpyxl", mode="a", if_sheet_exists='replace') as writer:
         df.to_excel(writer, sheet_name=sheet, index=False)
@@ -142,8 +139,29 @@ def getMSE(actual, predicted):
             writer.sheets[sheet].cell(row=1, column=last_column + col_offset + 1).value = metric
 
 '''
-""
+
+def test10x(path, ref_sheet, train_sheet, test_sheet, dep, indep):
+    writeTrainData(path, ref_sheet, train_sheet)
+    coeff = getCoefficients(path, train_sheet, dep, indep)
+    print(coeff)
+    for i in range(1,11): 
+        currTest = f"{test_sheet}_{i}"
+        writeTestData(path, ref_sheet, currTest)
+
+        writePredictions(path, currTest, coeff)
+
 path = "Model.xlsx"
+reference_sheet = "Trimmed_Data"
+
+newTrain = "Train_Data"
+newTest = "Test_Data"
+
+y = ["TOTEX"]
+x = ["TOINC", "URB","FSIZE", "emp_status"]
+
+test10x(path, reference_sheet, newTrain, newTest, y, x)
+
+'''path = "Model.xlsx"
 reference_sheet = "Trimmed_Data"
 
 newTrain = "Train_Data"
@@ -154,7 +172,7 @@ writeTrainAndTestData(path, reference_sheet, newTrain, newTest)
 coeff = getCoefficients(path, newTrain, y, x)
 print(coeff)
 
-writePredictions(path, newTest, coeff)
+writePredictions(path, newTest, coeff)'''
 
 #writeRMSE(path, newTest)
     

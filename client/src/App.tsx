@@ -12,7 +12,6 @@ const App = () => {
 
 const AppContent = () => {
   const { isUploaded } = useResult();
-  const { sheetName, setSheetName } = useResult();
   const nav = useNavigate();
 
   const { isLoading } = useResult();

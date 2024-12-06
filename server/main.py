@@ -85,9 +85,11 @@ def regression(file_path, sheet, y, x):
         "r_squared": results.rsquared,
         "adj_r_squared": results.rsquared_adj,
     }
+    
     print(regression_summary["coefficients"])
-    print(results.params.to_dict())
-    print(results.summary())
+    print(regression_summary["p_values"],)
+    print(regression_summary["r_squared"])
+    print(regression_summary["adj_r_squared"])
 
     return regression_summary
 

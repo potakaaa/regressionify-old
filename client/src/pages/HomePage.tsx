@@ -61,6 +61,7 @@ const HomePage = () => {
         regression,
       });
       setCoeff(response.data.regression.coefficients);
+
       setPValues(response.data.regression.p_values);
       console.log(pValues);
       setRSquared(response.data.regression.r_squared);

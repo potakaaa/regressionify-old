@@ -13,24 +13,24 @@ const ResultPage = () => {
   console.log(sheetName);
 
   return (
-    <div className="size-full h-screen flex bg-dark-green flex-col gap-8 items-center py-20 px-8">
+    <div className="size-full h-full flex bg-dark-green flex-col gap-8 items-center py-20 px-8">
       <div className="title-container flex p-5 px-8 rounded-full bg-dark-grey shadow-2xl ">
         <h1 className="text-3xl text-beige">Regressionify</h1>
       </div>
       <div className="flex flex-col gap-3 w-full">
         <h3 className="text-xl font-bold text-center">Result</h3>
         <div className="flex gap-5 items-center h-12 border border-beige rounded-full px-5 shadow-lg overflow-x-auto whitespace-nowrap no-scrollbar">
-          <p>Sheet Name:</p>
+          <p>Sheet Name :</p>
           <p className="font-normal text-center flex-grow text-sm ">
             {sheetName}
           </p>
         </div>
         <div className="flex gap-5 items-center h-12 border border-beige rounded-full px-5 shadow-lg overflow-x-auto whitespace-nowrap no-scrollbar">
-          <p>Dependent:</p>
+          <p>Dependent :</p>
           <p className="font-normal text-center flex-grow text-sm">{dep}</p>
         </div>
         <div className="flex gap-5 items-center h-12 border border-beige rounded-full px-5 shadow-lg overflow-x-auto whitespace-nowrap no-scrollbar">
-          <p>Independent:</p>
+          <p>Independent :</p>
           <p className="font-normal text-center flex-grow text-sm">{indep}</p>
         </div>
         <h3 className="text-xl font-bold text-center mt-5">Coefficients</h3>
@@ -39,7 +39,7 @@ const ResultPage = () => {
             .reverse()
             .map(([key, value], index) => (
               <div className="flex gap-5 items-center h-12 border border-beige rounded-full px-5 shadow-lg overflow-x-auto whitespace-nowrap no-scrollbar">
-                <p>{key}:</p>
+                <p>{key} :</p>
 
                 <p
                   key={index}
@@ -49,6 +49,36 @@ const ResultPage = () => {
                 </p>
               </div>
             ))}
+        </div>
+        <h3 className="text-xl font-bold text-center mt-5">P-Values</h3>
+        <div className="flex flex-col gap-3 w-full">
+          {Object.entries(pValues)
+            .reverse()
+            .map(([key, value], index) => (
+              <div className="flex gap-5 items-center h-12 border border-beige rounded-full px-5 shadow-lg overflow-x-auto whitespace-nowrap no-scrollbar">
+                <p>{key} :</p>
+
+                <p
+                  key={index}
+                  className="font-normal text-sm text-center  flex-grow"
+                >
+                  {value}
+                </p>
+              </div>
+            ))}
+        </div>
+        <h3 className="text-xl font-bold text-center mt-5">Accuracy</h3>
+        <div className="flex gap-5 items-center h-12 border border-beige rounded-full px-5 shadow-lg overflow-x-auto whitespace-nowrap no-scrollbar">
+          <p>R-Squared :</p>
+          <p className="font-normal text-center flex-grow text-sm">
+            {rSquared}
+          </p>
+        </div>
+        <div className="flex gap-5 items-center h-12 border border-beige rounded-full px-5 shadow-lg overflow-x-auto whitespace-nowrap no-scrollbar">
+          <p>Adjusted R² :</p>
+          <p className="font-normal text-center flex-grow text-sm">
+            {adjRSquared}
+          </p>
         </div>
         <div className="formula-container flex flex-col gap-2 ">
           <h3 className="text-xl font-bold text-center mt-5">Model Formula</h3>

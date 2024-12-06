@@ -1,59 +1,53 @@
 import pandas as pd
+import numpy as np
 import statsmodels.api as sm
 
-'''file_path = "testdata.xlsx"
-data = pd.read_excel(file_path, skiprows=1)
+path = "Model.xlsx"
+df = pd.read_excel(path, sheet_name="Trimmed_Data")
 
-#print(data.head())
+indep = ["TOINC", "URB", "FSIZE", "emp_status"]
 
-# Extract dependent variable (Y) and independent variables (X)
-Y = data['Total Household Income']  # Replace with the actual column name for Y
-X = data[['Family Size', 
-          'Gross Domestic Regional Product (GDRP)', 
-          'Imputed House Rental Value',
-          'Transport',
-          'Miscellaneous Goods and Services',
-          ]]
+'''corr_matrix = df[indep].corr()
 
-# Add a constant term for the intercept
-X = sm.add_constant(X)
+correlation_dict = {}
+for col1 in corr_matrix.columns:
+    for col2 in corr_matrix.columns:
+        if col1 != col2:  # Avoid self-correlation
+            key = f"{col1}-{col2}"
+            correlation_dict[key] = float(corr_matrix.loc[col1, col2])  # Convert to float
 
-# Fit the regression model
-model = sm.OLS(Y, X).fit()
+# Print the dictionary
+print("Correlation Dictionary:")
+print(correlation_dict)
 
-p_values = model.pvalues
+print("Correlation matrix", corr_matrix)'''
 
-x_p_values = p_values.drop('const')
+def correlation(path, sheet, indep):
+    df = pd.read_excel(path, sheet_name=sheet)
 
-x_p_values_list = x_p_values.tolist()
+    corr_matrix = df[indep].corr()
 
-print(x_p_values_list)'''
+    correlation_dict = {}
+    for col1 in corr_matrix.columns:
+        for col2 in corr_matrix.columns:
+            if col1 != col2:  # Avoid self-correlation
+                key = f"{col1}-{col2}"
+                correlation_dict[key] = float(corr_matrix.loc[col1, col2])  # Convert to float
 
-def regressionify(file, x, y, skip=0):
-    data = pd.read_excel(file, skiprows=skip)
+    # Print the dictionary
+    print("Correlation Dictionary:")
+    print(correlation_dict)
 
-    Y = data[y]
-    X = data[x]
+def regression(path, sheet, y, x):
+    data = pd.read_excel(path, sheet_name=sheet)
 
-    # Add a constant term for the intercept
-    X = sm.add_constant(X)
+    independent = data[x]
+    dependent = data[y]
 
-    model = sm.OLS(Y, X).fit()
-    p_values = model.pvalues
-    x_p_values = p_values.drop('const')
+    independent = sm.add_constant(independent)
+    model = sm.OLS(dependent, independent)
+    results = model.fit()
 
-    print(x_p_values)
+    print(results.summary())
 
-    return sorted(x_p_values.tolist())
-
-print(regressionify(
-    'testdata.xlsx', 
-    ['Family Size',
-    'Gross Domestic Regional Product (GDRP)', 
-    'Imputed House Rental Value',
-    'Transport',
-    'Miscellaneous Goods and Services'],
-    'Total Household Income',
-    skip=1
-    ))
-    
+regression("Model.xlsx", "Trimmed_Data", ["TOTEX"], indep)

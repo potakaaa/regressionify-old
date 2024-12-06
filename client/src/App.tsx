@@ -1,9 +1,10 @@
-import React from "react";
-import UploadFileForm from "./pages/UploadFileForm";
+import React, { useEffect } from "react";
+import HomePage from "./pages/HomePage";
 import { ResultProvider, useResult } from "./helper/context";
-import LoadingScreen from "./pages/loadingSpinner";
-
 import "./App.css";
+import LoadingScreen from "./pages/LoadingSpinner";
+import ResultPage from "./pages/ResultPage";
+import { useNavigate } from "react-router-dom";
 
 const App = () => {
   return (
@@ -14,16 +15,17 @@ const App = () => {
 };
 
 const AppContent = () => {
-  const { isLoading } = useResult();
+  const { isUploaded } = useResult();
+  const nav = useNavigate();
 
+  const { isLoading } = useResult();
   return (
-    <div className="container">
-      <div className="title-container">
-        <h1>Regressionify</h1>
-        <span>{isLoading ? <LoadingScreen /> : ""}</span>
+    <ResultProvider>
+      <div className="size-full h-screen flex justify-center bg-dark-green overflow-scroll">
+        {isLoading && <LoadingScreen />}
+        {isUploaded ? <ResultPage /> : <HomePage />}
       </div>
-      <UploadFileForm />
-    </div>
+    </ResultProvider>
   );
 };
 

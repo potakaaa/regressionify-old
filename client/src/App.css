@@ -1,9 +1,4 @@
 * {
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  font-family: Inter;
+  font-weight: 700;
 }

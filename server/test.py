@@ -51,3 +51,5 @@ def regression(path, sheet, y, x):
     print(results.summary())
 
 regression("Model.xlsx", "Trimmed_Data", ["TOTEX"], indep)
+
+

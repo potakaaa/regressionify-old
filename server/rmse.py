@@ -8,7 +8,6 @@ from statistics import mean
 import numpy as np
 
 class TrainAndTest:
-    
 
     def shuffleData(subset_data):
         return subset_data.sample(frac=1).reset_index(drop=True)

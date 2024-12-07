@@ -29,6 +29,7 @@ export default {
           DEFAULT: '#ECDFCC'
         }
         
+        
       }, 
       fontFamily: {
         Inter: ["Inter"]

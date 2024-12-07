@@ -6,6 +6,7 @@ import statsmodels.api as sm
 from sklearn.metrics import mean_squared_error as mse
 from math import sqrt
 from statistics import mean
+from collections import OrderedDict
 
 app = Flask(__name__)
 cors = CORS(app, origins='*')
@@ -48,8 +49,7 @@ def uploadFile():
 
             # Perform regression
             reg = regression(file_path, sheet, y, x)
-            print(reg["coefficients"])
-
+           
             # Read the Excel data for preview
             data = pd.read_excel(file_path, sheet_name=sheet)
             excelFile = pd.ExcelFile(file_path)
@@ -80,13 +80,15 @@ def regression(file_path, sheet, y, x):
 
     # Prepare the results
     regression_summary = {
-        "coefficients": results.params.to_dict(),
-        "p_values": results.pvalues.to_dict(),
+        "coefficient_names": results.params.index.to_list(),
+        "coefficient_values": results.params.to_list(),
+        "p_values": results.pvalues.to_list(),
         "r_squared": results.rsquared,
         "adj_r_squared": results.rsquared_adj,
     }
     
-    print(regression_summary["coefficients"])
+    print(regression_summary["coefficient_names"])
+    print(regression_summary["coefficient_values"])
     print(regression_summary["p_values"],)
     print(regression_summary["r_squared"])
     print(regression_summary["adj_r_squared"])

@@ -60,9 +60,30 @@ const HomePage = () => {
         dataPreview: JSON.parse(data_head),
         regression,
       });
-      setCoeff(response.data.regression.coefficients);
+      const coefficientNames = regression.coefficient_names;
+      const coefficientValues = regression.coefficient_values;
+      const pValues_Values = regression.p_values;
 
-      setPValues(response.data.regression.p_values);
+      const coefficientsDictionary = coefficientNames.reduce(
+        (acc: Record<string, number>, name: string, index: number) => {
+          acc[name] = coefficientValues[index];
+          return acc;
+        },
+        {}
+      );
+
+      const pValueDictionary = coefficientNames.reduce(
+        (acc: Record<string, number>, name: string, index: number) => {
+          acc[name] = pValues_Values[index];
+          return acc;
+        },
+        {}
+      );
+
+      // Set the state with the dictionary
+      setCoeff(coefficientsDictionary);
+
+      setPValues(pValueDictionary); //
       console.log(pValues);
       setRSquared(response.data.regression.r_squared);
       console.log(rSquared);
@@ -138,13 +159,16 @@ const HomePage = () => {
         </div>
       )}
       <div className="notes-container  flex flex-col gap-2 w-72">
-        <p className="font-medium text-center">Important Notes</p>
+        <p className="font-bold text-center">Important Notes</p>
         <p className="font-light text-sm leading-relaxed">
           1. Inputs are case-sensitive
           <br />
-          2. Regressionify will only read the excel file and not write anything
+          2. Separate independent variables with a comma
           <br />
-          3. Files will not be used for any other purposes
+          3. Regressionify will only read the excel file and not write anything
+          <br />
+          4. Files will not be used for any other purposes
+          <br />
         </p>
       </div>
     </div>

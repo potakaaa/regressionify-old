@@ -16,7 +16,7 @@ const AppContent = () => {
 
   const { isLoading } = useResult();
   return (
-    <div className="size-full h-screen flex justify-center bg-dark-green overflow-scroll">
+    <div className="size-full h-screen flex justify-center bg-dark-green ">
       {isLoading && <LoadingScreen />}
       {isUploaded ? <ResultPage /> : <HomePage />}
     </div>

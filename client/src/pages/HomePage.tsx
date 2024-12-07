@@ -99,19 +99,21 @@ const HomePage = () => {
     }
   };
   return (
-    <div className="main-container flex flex-col gap-16 justify-center items-center p-8">
-      <div className="title-container flex p-5 px-8 rounded-full bg-dark-grey shadow-2xl ">
-        <h1 className="text-3xl text-beige">Regressionify</h1>
+    <div className="main-container flex flex-col gap-16 justify-center items-center p-8 sm:w-full">
+      <div className="title-container flex p-5 px-8 rounded-full bg-dark-grey shadow-2xl md:w-[22rem] xl:w-[27rem]">
+        <h1 className="text-3xl text-beige sm:text-center sm:flex-grow sm:text-4xl xl:text-5xl">
+          Regressionify
+        </h1>
       </div>
       <div className="form-container flex justify-center items-center w-full mt-8">
         <form className="flex flex-col gap-6" onSubmit={handleFileSubmit}>
           <div className="input-container flex flex-col gap-3 justify-center">
-            <label>Worksheet Details</label>
+            <label className="sm:text-xl">Worksheet Details</label>
             <input
               type="text"
               placeholder="Reference Sheet Name"
               required
-              className="font-medium p-2 px-4 rounded-full bg-transparent border border-beige shadow-lg"
+              className="font-medium p-2 px-4 rounded-full bg-transparent border border-beige shadow-lg sm:w-96 xl:py-3 xl:px-5 xl:w-[32rem]"
               value={sheetName}
               onChange={(e) => setSheetName(e.target.value)}
             />
@@ -119,7 +121,7 @@ const HomePage = () => {
               type="text"
               placeholder="Dependent Variable"
               required
-              className="font-medium p-2 px-4 rounded-full bg-transparent border border-beige shadow-lg"
+              className="font-medium p-2 px-4 rounded-full bg-transparent border border-beige shadow-lg sm:w-96 xl:py-3 xl:px-5 xl:w-[32rem]"
               value={dep}
               onChange={(e) => setDep(e.target.value)}
             />
@@ -127,17 +129,17 @@ const HomePage = () => {
               type="text"
               placeholder="Independent Variable"
               required
-              className="font-medium p-2 px-4 rounded-full bg-transparent border border-beige shadow-lg"
+              className="font-medium p-2 px-4 rounded-full bg-transparent border border-beige shadow-lg sm:w-96 xl:py-3 xl:px-5 xl:w-[32rem]"
               value={indep}
               onChange={(e) => setIndep(e.target.value)}
             />
           </div>
-          <div className="upload-container flex flex-col gap-2">
-            <label className="block text-base" id="file_input">
+          <div className="upload-container flex flex-col sm:flex-row gap-2 items-center">
+            <label className="block text-base xl:text-lg" id="file_input">
               Upload file
             </label>
             <input
-              className="block w-64 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              className="block w-64 sm:w-72 xl:h-7 xl:text-base xl:flex-grow text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
               id="file_input"
               type="file"
               accept=".xlsx"
@@ -147,15 +149,17 @@ const HomePage = () => {
           </div>
           <button
             type="submit"
-            className=" bg-dark-grey px-4 py-2 rounded-full hover:bg-light-green duration-300 shadow-lg"
+            className=" bg-dark-grey px-4 py-2 rounded-full hover:bg-light-green duration-300 shadow-lg sm:text-xl xl:py-4 xl:text-2xl"
           >
             Start Regression
           </button>
         </form>
       </div>
-      <div className="notes-container  flex flex-col gap-2 w-72">
-        <p className="font-bold text-center">Important Notes</p>
-        <p className="font-light text-sm leading-relaxed">
+      <div className="notes-container  flex flex-col gap-2 sm:w-96 xl:w-[30rem]">
+        <p className="font-bold text-center sm:text-lg xl:text-xl">
+          Important Notes
+        </p>
+        <p className="font-light text-sm sm:text-base leading-relaxed xl:text-lg">
           1. Inputs are case-sensitive
           <br />
           2. Separate independent variables with a comma

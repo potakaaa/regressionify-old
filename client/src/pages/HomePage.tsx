@@ -153,11 +153,6 @@ const HomePage = () => {
           </button>
         </form>
       </div>
-      {result && (
-        <div className="result-container ">
-          <p className="font-bold shadow-sm">{result.message}</p>
-        </div>
-      )}
       <div className="notes-container  flex flex-col gap-2 w-72">
         <p className="font-bold text-center">Important Notes</p>
         <p className="font-light text-sm leading-relaxed">

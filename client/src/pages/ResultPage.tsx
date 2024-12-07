@@ -42,8 +42,8 @@ const ResultPage = () => {
         </h1>
       </div>
       <div
-        className="body-container flex flex-col gap-3 w-3\
-      "
+        className="body-container flex flex-col gap-3 w-full
+      sm:w-[30rem] lg:w-[35rem] xl:w-[50rem] 2xl:w-[70rem]"
       >
         <h3 className="text-2xl font-bold text-center xl:text-2xl">
           Predictor Model
@@ -52,7 +52,6 @@ const ResultPage = () => {
           <p className="font-normal mx-2 ">{dep}</p>
           <input
             className="font-normal text-sm bg-transparent self-center w-full focus:border-transparent focus:ring-0 items-center h-12 border border-beige rounded-full px-5 text-center md:py-7 md:text-base"
-            placeholder="Try inputting values"
             value={predValue.toFixed(2)}
             readOnly
           />
@@ -68,12 +67,12 @@ const ResultPage = () => {
                 return <div></div>;
               } else {
                 return (
-                  <div className="flex flex-col gap-2 shadow-lg overflow-x-auto whitespace-nowrap no-scrollbar mt-0">
+                  <div className="flex flex-col gap-2 shadow-lg overflow-x-auto whitespace-nowrap no-scrollbar mt-0 flex-grow">
                     <p className="font-normal mx-2">{key}</p>
                     <input
                       type="number"
                       className="font-normal text-sm bg-transparent self-center w-full focus:border-transparent focus:ring-0 items-center h-12 border border-beige rounded-full px-5 text-center md:py-7 md:text-base xl:w-[20rem]"
-                      placeholder="Try inputting values..."
+                      placeholder="Input values"
                       value={
                         stateObjects[key].value === 0
                           ? ""

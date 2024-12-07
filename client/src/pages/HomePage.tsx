@@ -155,7 +155,7 @@ const HomePage = () => {
           </button>
         </form>
       </div>
-      <div className="notes-container  flex flex-col gap-2 sm:w-96 xl:w-[30rem]">
+      <div className="notes-container  flex flex-col gap-2 w-64 sm:w-96 xl:w-[30rem]">
         <p className="font-bold text-center sm:text-lg xl:text-xl">
           Important Notes
         </p>

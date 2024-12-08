@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import { useResult, ResultProvider } from "../helper/context.tsx";
+import { useResult } from "../helper/context.tsx";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isUploaded, setIsUploaded] = useState(false);
-  const { isLoading, setIsLoading } = useResult();
-  const { result, setResult } = useResult();
+  const { setIsLoading } = useResult();
+  const { setResult } = useResult();
   const { sheetName, setSheetName } = useResult();
   const { indep, setIndep } = useResult();
   const { dep, setDep } = useResult();
-  const { coeff, setCoeff } = useResult();
+  const { setCoeff } = useResult();
   const { pValues, setPValues } = useResult();
   const { rSquared, setRSquared } = useResult();
   const { adjRSquared, setAdjRSquared } = useResult();
@@ -93,7 +93,21 @@ const HomePage = () => {
       setIsLoading(false);
       setIsUploaded(true);
     } catch (error) {
-      console.error("Error response:", error.response?.data || error.message);
+      if (
+        error &&
+        typeof error === "object" &&
+        "message" in error &&
+        "response" in error
+      ) {
+        console.error(
+          "Error response:",
+          (error as any).response?.data ||
+            (error as any).message ||
+            "Unknown error"
+        );
+      } else {
+        console.error("Unknown error");
+      }
       alert("Error processing file");
       setIsLoading(false);
     }

@@ -62,7 +62,7 @@ const ResultPage = () => {
             Input values here to see the magic...
           </p>
           <div className="predict-container flex flex-col xl:flex-row xl:mt-8 gap-2 ">
-            {Object.entries(coeff).map(([key, value], index) => {
+            {Object.entries(coeff).map(([key]) => {
               if (key === "const") {
                 return <div></div>;
               } else {
@@ -99,7 +99,7 @@ const ResultPage = () => {
           <h3 className="text-xl font-bold text-center mt-5">Model Formula</h3>
           <p className="font-normal italic text-center md:text-lg">
             {Object.entries(coeff)
-              .map(([key, value], index) => {
+              .map(([key, value]) => {
                 if (key === "const") {
                   return `${value.toFixed(2)}`; // For intercept, just return the value
                 }

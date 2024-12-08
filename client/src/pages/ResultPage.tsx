@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { useResult, ResultProvider } from "../helper/context";
+import { useResult } from "../helper/context";
 import { useNavigate } from "react-router-dom";
 
 const ResultPage = () => {
-  const { sheetName, setSheetName } = useResult();
+  const { sheetName } = useResult();
   const { dep } = useResult();
   const { indep } = useResult();
   const { coeff } = useResult();

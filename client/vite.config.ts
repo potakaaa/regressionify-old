@@ -6,7 +6,7 @@ import tailwindcss from 'tailwindcss'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "/regressionify",
+  base: "/regressionify/client",
   css: {
     postcss: {
       plugins: [tailwindcss()],

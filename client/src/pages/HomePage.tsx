@@ -116,7 +116,7 @@ const HomePage = () => {
     }
   };
   return (
-    <div className="main-container flex flex-col gap-16 justify-center items-center p-8 sm:w-full">
+    <div className="main-container size-full flex flex-col gap-16 justify-center items-center p-8 sm:w-full">
       <div className="title-container flex p-5 px-8 rounded-full bg-dark-grey shadow-2xl md:w-[22rem] xl:w-[27rem]">
         <h1 className="text-3xl text-beige sm:text-center sm:flex-grow sm:text-4xl xl:text-5xl">
           Regressionify

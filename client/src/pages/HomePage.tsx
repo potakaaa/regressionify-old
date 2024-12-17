@@ -49,10 +49,13 @@ const HomePage = () => {
 
     try {
       {
-        /* https://regressionify.onrender.com/upload*/
+        /* https://regressionify.onrender.com/upload
+        // http://192.168.18.86:5000
+        // 
+        // */
       }
       const response = await axios.post(
-        "https://regressionify.onrender.com/upload",
+        "http://192.168.18.86:5000/upload",
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
